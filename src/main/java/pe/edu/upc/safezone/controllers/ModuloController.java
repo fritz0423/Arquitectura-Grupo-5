@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.safezone.dtos.*;
 import pe.edu.upc.safezone.entities.Modulo;
@@ -26,6 +27,7 @@ public class ModuloController {
     private IUsuarioService uS;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<ModuloListDTO>> listarModulos() {
         ModelMapper m = new ModelMapper();
         List<ModuloListDTO> lista = mS.listarModulos().stream()
@@ -35,6 +37,7 @@ public class ModuloController {
     }
 
     @PostMapping("/registrar")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> registrar(@RequestBody ModuloGeneralDTO dto) {
         if (dto.getProgressModulo() < 0 || dto.getProgressModulo() > 100) {
             return ResponseEntity.badRequest()
@@ -65,6 +68,7 @@ public class ModuloController {
     }
 
     @PutMapping("/modificar")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> actualizar(@RequestBody ModuloGeneralDTO dto) {
         if (dto.getProgressModulo() < 0 || dto.getProgressModulo() > 100) {
             return ResponseEntity.badRequest()
@@ -96,6 +100,7 @@ public class ModuloController {
     }
 
     @DeleteMapping("/eliminar/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
         Optional<Modulo> modulo = mS.listId(id);
         if (modulo.isPresent()) {
@@ -108,6 +113,7 @@ public class ModuloController {
     }
 
     @GetMapping("/listar-progreso-avanzado")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
     public ResponseEntity<?> listarPorProgresoMayorIgual() {
 
         float progresoMinimo = 65f;
@@ -136,6 +142,7 @@ public class ModuloController {
 
 
     @GetMapping("/listar-categoria")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
     public ResponseEntity<?> listarPorCategoria(@RequestParam String categoria) {
 
         if (categoria == null || categoria.isBlank()) {
@@ -165,6 +172,7 @@ public class ModuloController {
         return ResponseEntity.ok(resultado);
     }
     @GetMapping("/total-multimedia")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
     public ResponseEntity<?> listarModulosConTotalMultimedia() {
 
         List<Object[]> lista = mS.listarmodulosconmultimedia();

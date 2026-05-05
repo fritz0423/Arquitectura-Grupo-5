@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface IUsuarioRepository extends JpaRepository<Usuario,Integer> {
 
+    Usuario findOneByEmailUsuario(String emailUsuario);
     @Query(value = """
     SELECT u.id_usuario,
            u.name_usuario,

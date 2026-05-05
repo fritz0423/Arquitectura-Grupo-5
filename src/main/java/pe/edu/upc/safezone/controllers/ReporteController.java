@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.safezone.dtos.ReporteDTO;
 import pe.edu.upc.safezone.dtos.ReporteTipoVulnerabilidadDTO;
@@ -28,6 +29,7 @@ public class    ReporteController {
     private IVulnerabilidadService vS;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<List<ReporteDTO>> listarReportes() {
         ModelMapper m = new ModelMapper();
         List<ReporteDTO> lista = rS.listarReportes().stream()
@@ -41,6 +43,7 @@ public class    ReporteController {
     }
 
     @PostMapping("/registrar")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<?> registrar(@RequestBody ReporteDTO dto) {
         if (dto.getDateReporte().isAfter(java.time.LocalDateTime.now())) {
             return ResponseEntity.badRequest()
@@ -72,6 +75,7 @@ public class    ReporteController {
     }
 
     @PutMapping("/modificar")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<String> actualizar(@RequestBody ReporteDTO dto) {
         if (dto.getDateReporte().isAfter(java.time.LocalDateTime.now())) {
             return ResponseEntity.badRequest()
@@ -104,6 +108,7 @@ public class    ReporteController {
     }
 
     @DeleteMapping("/eliminar/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
         Optional<Reporte> reporte = rS.listId(id);
         if (reporte.isPresent()) {
@@ -117,6 +122,7 @@ public class    ReporteController {
 
     // --- QUERY SIMPLE 1: Filtro por Tipo ---
     @GetMapping("/buscarportipo/{tipo}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<?> buscarPorTipo(@PathVariable String tipo) {
         List<Reporte> lista = rS.findByTypeReporteContainingIgnoreCase(tipo);
         if (lista.isEmpty()) {
@@ -135,6 +141,7 @@ public class    ReporteController {
     }
 
     @GetMapping("/vulnerabilidades-frecuentes")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<?> obtenerCantidadPorVulnerabilidad(){
         List<String[]> lista = rS.countReportsByVulnerabilityType();
 
@@ -155,6 +162,7 @@ public class    ReporteController {
     }
 
     @GetMapping("/reportes-por-usuario")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<?> obtenerReportesPorUsuario() {
         List<String[]> lista = rS.countReportsByUser();
 
