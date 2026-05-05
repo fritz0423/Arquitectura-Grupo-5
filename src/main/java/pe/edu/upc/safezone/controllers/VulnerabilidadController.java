@@ -49,7 +49,6 @@ public class VulnerabilidadController {
     }
 
     @PutMapping("/modificar")
-
     public ResponseEntity<String> actualizar(@RequestBody VulnerabilidadDTO dto) {
 
         Optional<Vulnerabilidad> existente = Vu.listId(dto.getIdActividad());

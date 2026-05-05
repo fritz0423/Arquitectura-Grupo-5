@@ -1,5 +1,6 @@
 package pe.edu.upc.safezone.serviceinterfaces;
 
+import pe.edu.upc.safezone.entities.Modulo;
 import pe.edu.upc.safezone.entities.Usuario;
 
 import java.time.LocalDateTime;
@@ -15,4 +16,9 @@ public interface IUsuarioService {
     public void delete(int id);
     List<Object[]> obtenerUsuariosConTotalActividades();
     List<Usuario> listarPorIntervaloFechas(LocalDateTime fechaInicio, LocalDateTime fechaFin);
+
+    List<Usuario> listarusuarioxestado(Boolean statusUsuario);
+
+    List<Object[]> Usuariosresumenmodulo();
+
 }
