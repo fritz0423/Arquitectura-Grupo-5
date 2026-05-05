@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.safezone.dtos.*;
 import pe.edu.upc.safezone.entities.Modulo;
@@ -25,7 +26,8 @@ public class UsuarioController {
     @Autowired
     private IModuloService iModuloService;
 
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -37,9 +39,9 @@ public class UsuarioController {
         return  ResponseEntity.ok().body(listaUsuarios);
     }
 
-
     @PostMapping("/registrar")
     public ResponseEntity<?> registrar(@RequestBody UsuarioGeneralDTO dto){
+
         if (dto.getNameUsuario() == null || dto.getNameUsuario().isBlank()
                 || dto.getEmailUsuario() == null || dto.getEmailUsuario().isBlank()
                 || dto.getPasswordUsuario() == null || dto.getPasswordUsuario().isBlank()) {
@@ -47,14 +49,14 @@ public class UsuarioController {
             return ResponseEntity.badRequest()
                     .body("Complete los campos obligatorios");
         }
-
         ModelMapper m = new ModelMapper();
         Usuario c = m.map(dto, Usuario.class);
 
+        c.setPasswordUsuario(passwordEncoder.encode(dto.getPasswordUsuario()));
+
         c.setDateRegisterUsuario(LocalDateTime.now());
 
-        Usuario cur = uS.insert(c);
-        UsuarioGeneralDTO responseDTO = m.map(cur, UsuarioGeneralDTO.class);
+        uS.insert(c);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("Usuario registrado correctamente");

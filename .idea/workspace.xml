@@ -5,27 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ba5bab4c-3c7c-4ecd-a717-83f55cec72fa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/JwtAuthenticationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/dtos/JwtRequestDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/dtos/JwtResponseDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/securities/JwtAuthenticationEntryPoint.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/securities/JwtRequestFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/securities/JwtTokenUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/securities/SwaggerConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/securities/WebSecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/serviceimplements/JwtUserDetailsService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/ActividadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/ActividadController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/AlertaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/AlertaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/ModuloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/ModuloController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/MultimediaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/MultimediaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/RecomendacionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/RecomendacionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/ReporteController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/ReporteController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/RolController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/RolController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/UsuarioController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/UsuarioController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/VulnerabilidadController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/controllers/VulnerabilidadController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/repositories/IUsuarioRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pe/edu/upc/safezone/repositories/IUsuarioRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +40,8 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm"
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RunManager">
@@ -73,6 +54,14 @@
       </method>
     </configuration>
   </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
+        <option value="bundled-js-predefined-d6986cc7102b-3aa1da707db6-JavaScript-IU-252.26830.84" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="ba5bab4c-3c7c-4ecd-a717-83f55cec72fa" name="Changes" comment="" />
@@ -80,6 +69,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1777951310800</updated>
+      <workItem from="1778005292741" duration="287000" />
     </task>
     <servers />
   </component>
