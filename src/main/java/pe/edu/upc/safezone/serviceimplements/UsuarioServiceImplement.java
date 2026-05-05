@@ -2,6 +2,7 @@ package pe.edu.upc.safezone.serviceimplements;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pe.edu.upc.safezone.entities.Modulo;
 import pe.edu.upc.safezone.entities.Usuario;
 import pe.edu.upc.safezone.repositories.IUsuarioRepository;
 import pe.edu.upc.safezone.serviceinterfaces.IUsuarioService;
@@ -50,5 +51,16 @@ public class UsuarioServiceImplement implements IUsuarioService {
     public List<Usuario> listarPorIntervaloFechas(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
         return uR.findByDateRegisterUsuarioBetween(fechaInicio, fechaFin);
     }
+
+    @Override
+    public List<Usuario> listarusuarioxestado(Boolean statusUsuario) {
+        return uR.findByStatusUsuario(statusUsuario);
+    }
+
+    @Override
+    public List<Object[]> Usuariosresumenmodulo() {
+        return uR.findUsuariosConResumenModulos();
+    }
+
 
 }

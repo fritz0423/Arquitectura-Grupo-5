@@ -5,11 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pe.edu.upc.safezone.dtos.UsuarioActividadDTO;
-import pe.edu.upc.safezone.dtos.UsuarioFechaDTO;
-import pe.edu.upc.safezone.dtos.UsuarioGeneralDTO;
-import pe.edu.upc.safezone.dtos.UsuarioListDTO;
+import pe.edu.upc.safezone.dtos.*;
+import pe.edu.upc.safezone.entities.Modulo;
 import pe.edu.upc.safezone.entities.Usuario;
+import pe.edu.upc.safezone.serviceinterfaces.IModuloService;
 import pe.edu.upc.safezone.serviceinterfaces.IUsuarioService;
 
 import java.time.LocalDateTime;
@@ -22,13 +21,18 @@ import java.util.stream.Collectors;
 public class UsuarioController {
     @Autowired
     private IUsuarioService uS;
+    @Autowired
+    private IModuloService iModuloService;
+
+
+
     @GetMapping
     public ResponseEntity<List<UsuarioListDTO>> ListarUsuarios() {
         ModelMapper m = new ModelMapper();
         List<UsuarioListDTO>listaUsuarios=uS.ListarUsuarios().stream()
                 .map(y->m.map(y,UsuarioListDTO.class))
                 .collect(Collectors.toList());
-    return  ResponseEntity.ok().body(listaUsuarios);
+        return  ResponseEntity.ok().body(listaUsuarios);
     }
 
 
@@ -47,7 +51,6 @@ public class UsuarioController {
     }
 
     @PutMapping("/modificar")
-
     public ResponseEntity<String> actualizar(@RequestBody UsuarioGeneralDTO dto) {
         if (dto.getDateRegisterUsuario().isAfter(java.time.LocalDateTime.now())) {
             return ResponseEntity.badRequest()
@@ -139,6 +142,66 @@ public class UsuarioController {
         return ResponseEntity.ok(resultado);
     }
 
+    @GetMapping("/listar-estado")
+    public ResponseEntity<?> listarPorEstado(@RequestParam String estado) {
+
+        Boolean estadoBoolean;
 
 
+        if (estado == null || estado.isBlank()) {
+            return ResponseEntity.badRequest()
+                    .body("El parámetro 'estado' es obligatorio (true o false)");
+        }
+
+
+        if (estado.equalsIgnoreCase("true")) {
+            estadoBoolean = true;
+        } else if (estado.equalsIgnoreCase("false")) {
+            estadoBoolean = false;
+        } else {
+            return ResponseEntity.badRequest()
+                    .body("El valor de 'estado' debe ser 'true' o 'false'");
+        }
+
+        List<Usuario> usuarios = uS.listarusuarioxestado(estadoBoolean);
+
+        if (usuarios.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron usuarios con ese estado");
+        }
+
+
+        ModelMapper m = new ModelMapper();
+        List<UsuarioStatusDTO> resultado = usuarios.stream()
+                .map(u -> m.map(u, UsuarioStatusDTO.class))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(resultado);
+    }
+
+    @GetMapping("/resumen-modulos")
+    public ResponseEntity<?> listarUsuariosConResumenModulos() {
+
+        List<Object[]> lista = uS.Usuariosresumenmodulo();
+
+        if (lista.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se encontraron usuarios con resumen de módulos");
+        }
+
+        List<UsuarioModuloResumenDTO> resultado = lista.stream().map(fila -> {
+            UsuarioModuloResumenDTO dto = new UsuarioModuloResumenDTO();
+
+            dto.setIdUsuario(((Number) fila[0]).intValue());
+            dto.setNameUsuario((String) fila[1]);
+            dto.setEmailUsuario((String) fila[2]);
+            dto.setStatusUsuario((Boolean) fila[3]);
+            dto.setTotalModulos(((Number) fila[4]).longValue());
+            dto.setPromedioProgreso(((Number) fila[5]).doubleValue());
+
+            return dto;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(resultado);
+    }
 }

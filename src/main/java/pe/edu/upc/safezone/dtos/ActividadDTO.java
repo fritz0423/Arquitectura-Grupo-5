@@ -1,5 +1,6 @@
 package pe.edu.upc.safezone.dtos;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ActividadDTO {
@@ -7,7 +8,7 @@ public class ActividadDTO {
     private String actionTypeActividad;
     private String descriptionActividad;
     private String ipActividad;
-    private LocalDateTime dateActividad;
+    private LocalDate dateActividad;
     private int idUsuario;
 
     public int getIdUsuario() {
@@ -50,11 +51,11 @@ public class ActividadDTO {
         this.ipActividad = ipActividad;
     }
 
-    public LocalDateTime getDateActividad() {
+    public LocalDate getDateActividad() {
         return dateActividad;
     }
 
-    public void setDateActividad(LocalDateTime dateActividad) {
+    public void setDateActividad(LocalDate dateActividad) {
         this.dateActividad = dateActividad;
     }
 }
