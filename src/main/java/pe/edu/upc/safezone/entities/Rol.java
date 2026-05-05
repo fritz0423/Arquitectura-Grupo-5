@@ -1,8 +1,9 @@
 package pe.edu.upc.safezone.entities;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Rol")
+@Table(name = "Rol", uniqueConstraints = {@UniqueConstraint(columnNames = {"idUsuario", "nameRol"})})
 public class Rol {
 
     @Id
@@ -12,7 +13,7 @@ public class Rol {
     @Column(name = "nameRol",length =50 ,nullable =false )
     private String nameRol;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "idUsuario",  nullable = false) // FK en la tabla Rol
     private Usuario usuario;
 
