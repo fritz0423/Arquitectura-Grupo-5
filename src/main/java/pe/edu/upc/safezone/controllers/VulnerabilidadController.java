@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.safezone.dtos.UsuarioGeneralDTO;
 import pe.edu.upc.safezone.dtos.VulnerabilidadAlertaDTO;
@@ -26,6 +27,7 @@ public class VulnerabilidadController {
 
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<List<VulnerabilidadDTO>> ListarVulnerabilidades() {
         ModelMapper m = new ModelMapper();
         List<VulnerabilidadDTO>listaVul=Vu.ListarVulnerabilidad().stream()
@@ -35,6 +37,7 @@ public class VulnerabilidadController {
     }
 
     @PostMapping("/registrar")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<?> registrar(@RequestBody VulnerabilidadDTO dto){
         if (dto.getDateVulnerabilidad().isAfter(java.time.LocalDateTime.now())) {
             return ResponseEntity.badRequest()
@@ -49,6 +52,7 @@ public class VulnerabilidadController {
     }
 
     @PutMapping("/modificar")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<String> actualizar(@RequestBody VulnerabilidadDTO dto) {
 
         Optional<Vulnerabilidad> existente = Vu.listId(dto.getIdActividad());
@@ -70,6 +74,7 @@ public class VulnerabilidadController {
     }
 
     @DeleteMapping("/eliminar/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
         Optional<Vulnerabilidad> vulnerabilidad  = Vu.listId(id);
         if (vulnerabilidad.isPresent()) {
@@ -83,6 +88,7 @@ public class VulnerabilidadController {
     }
 
     @GetMapping("/reporte-alertas")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<List<VulnerabilidadAlertaDTO>> reporteAlertas() {
         List<VulnerabilidadAlertaDTO> resultado = Vu.obtenerVulnerabilidadesConTotalAlertas()
                 .stream()

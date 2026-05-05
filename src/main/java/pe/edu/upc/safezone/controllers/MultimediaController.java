@@ -3,6 +3,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.safezone.dtos.MultimediaGeneralDTO;
 import pe.edu.upc.safezone.dtos.MultimediaListDTO;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/multimedia")
+@PreAuthorize("hasAuthority('ADMIN')")
 public class MultimediaController {
 
     @Autowired

@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.safezone.dtos.*;
 import pe.edu.upc.safezone.entities.Modulo;
@@ -27,6 +28,7 @@ public class UsuarioController {
 
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UsuarioListDTO>> ListarUsuarios() {
         ModelMapper m = new ModelMapper();
         List<UsuarioListDTO>listaUsuarios=uS.ListarUsuarios().stream()
@@ -38,19 +40,28 @@ public class UsuarioController {
 
     @PostMapping("/registrar")
     public ResponseEntity<?> registrar(@RequestBody UsuarioGeneralDTO dto){
-        if (dto.getDateRegisterUsuario().isAfter(java.time.LocalDateTime.now())) {
-            return ResponseEntity.badRequest()
-                    .body("La fecha de registro del usuario no es valida");
-        }
-        ModelMapper m=new ModelMapper();
-        Usuario c=m.map(dto, Usuario.class);
-        Usuario cur= uS.insert(c);
-        UsuarioGeneralDTO responseDTO=m.map(cur,UsuarioGeneralDTO.class);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+        if (dto.getNameUsuario() == null || dto.getNameUsuario().isBlank()
+                || dto.getEmailUsuario() == null || dto.getEmailUsuario().isBlank()
+                || dto.getPasswordUsuario() == null || dto.getPasswordUsuario().isBlank()) {
 
+            return ResponseEntity.badRequest()
+                    .body("Complete los campos obligatorios");
+        }
+
+        ModelMapper m = new ModelMapper();
+        Usuario c = m.map(dto, Usuario.class);
+
+        c.setDateRegisterUsuario(LocalDateTime.now());
+
+        Usuario cur = uS.insert(c);
+        UsuarioGeneralDTO responseDTO = m.map(cur, UsuarioGeneralDTO.class);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Usuario registrado correctamente");
     }
 
     @PutMapping("/modificar")
+    @PreAuthorize("hasAnyAuthority('ADMIN','CLIENT')")
     public ResponseEntity<String> actualizar(@RequestBody UsuarioGeneralDTO dto) {
         if (dto.getDateRegisterUsuario().isAfter(java.time.LocalDateTime.now())) {
             return ResponseEntity.badRequest()
@@ -77,6 +88,7 @@ public class UsuarioController {
     }
 
     @DeleteMapping("/eliminar/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
         Optional<Usuario> usuario = uS.listId(id);
         if (usuario.isPresent()) {
@@ -91,6 +103,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/reporte-actividades")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UsuarioActividadDTO>> reporteActividades() {
         List<UsuarioActividadDTO> resultado = uS.obtenerUsuariosConTotalActividades()
                 .stream()
@@ -108,6 +121,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/listar-fechas")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> listarPorIntervaloFechas(
             @RequestParam String fechaInicio,
             @RequestParam String fechaFin) {
@@ -143,6 +157,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/listar-estado")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> listarPorEstado(@RequestParam String estado) {
 
         Boolean estadoBoolean;
@@ -180,6 +195,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/resumen-modulos")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> listarUsuariosConResumenModulos() {
 
         List<Object[]> lista = uS.Usuariosresumenmodulo();

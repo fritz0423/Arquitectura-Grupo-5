@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pe.edu.upc.safezone.dtos.RecomendacionDTO;
 import pe.edu.upc.safezone.dtos.RecomendacionPrioridadDTO;
@@ -27,6 +28,7 @@ public class RecomendacionController {
     private IReporteService rS;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST','CLIENT')")
     public ResponseEntity<List<RecomendacionDTO>> listarRecomendaciones() {
         ModelMapper m = new ModelMapper();
         List<RecomendacionDTO> lista = rcS.listarRecomendaciones().stream()
@@ -40,6 +42,7 @@ public class RecomendacionController {
     }
 
     @PostMapping("/registrar")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<?> registrar(@RequestBody RecomendacionDTO dto) {
         if (dto.getDateRecomendacion().isAfter(java.time.LocalDateTime.now())) {
             return ResponseEntity.badRequest()
@@ -68,6 +71,7 @@ public class RecomendacionController {
     }
 
     @PutMapping("/modificar")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<String> actualizar(@RequestBody RecomendacionDTO dto) {
         if (dto.getDateRecomendacion().isAfter(java.time.LocalDateTime.now())) {
             return ResponseEntity.badRequest()
@@ -97,6 +101,7 @@ public class RecomendacionController {
     }
 
     @DeleteMapping("/eliminar/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
         Optional<Recomendacion> recomendacion = rcS.listId(id);
         if (recomendacion.isPresent()) {
@@ -109,6 +114,7 @@ public class RecomendacionController {
     }
 
     @GetMapping("/buscarporprioridad/{prioridad}")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST','CLIENT')")
     public ResponseEntity<?> buscarPorPrioridad(@PathVariable String prioridad) {
         List<Recomendacion> lista = rcS.findByPriorityRecomendacionContainingIgnoreCase(prioridad);
         if (lista.isEmpty()) {
@@ -127,6 +133,7 @@ public class RecomendacionController {
     }
 
     @GetMapping("/prioridades")
+    @PreAuthorize("hasAnyAuthority('ADMIN','SECURITY_ANALYST')")
     public ResponseEntity<?> obtenerCantidadPorPrioridad() {
         List<String[]> lista = rcS.countByPriority();
 
