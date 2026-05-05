@@ -1,9 +1,9 @@
 package pe.edu.upc.safezone.entities;
 
-
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "Usuario")
@@ -28,17 +28,29 @@ public class Usuario {
     @Column(name = "dateRegisterUsuario",nullable =false )
     private LocalDateTime dateRegisterUsuario;
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "idUsuario")
+    private List<Rol> rol;
 
     public Usuario() {
     }
 
-    public Usuario(int idUsuario, String nameUsuario, String emailUsuario, String passwordUsuario, boolean statusUsuario, LocalDateTime dateRegisterUsuario) {
+    public Usuario(int idUsuario, String nameUsuario, String emailUsuario, String passwordUsuario, boolean statusUsuario, LocalDateTime dateRegisterUsuario, List<Rol> rol) {
         this.idUsuario = idUsuario;
         this.nameUsuario = nameUsuario;
         this.emailUsuario = emailUsuario;
         this.passwordUsuario = passwordUsuario;
         this.statusUsuario = statusUsuario;
         this.dateRegisterUsuario = dateRegisterUsuario;
+        this.rol = rol;
+    }
+
+    public List<Rol> getRol() {
+        return rol;
+    }
+
+    public void setRol(List<Rol> rol) {
+        this.rol = rol;
     }
 
     public int getIdUsuario() {
@@ -73,7 +85,7 @@ public class Usuario {
         this.passwordUsuario = passwordUsuario;
     }
 
-    public boolean isStatusUsuario() {
+    public boolean getStatusUsuario() {
         return statusUsuario;
     }
 
